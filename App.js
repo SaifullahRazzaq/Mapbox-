@@ -15,8 +15,7 @@ import MapboxGL ,{Layer,features} from '@react-native-mapbox-gl/maps';
 
 
 
-Mapbox.setAccessToken(
-  'pk.eyJ1Ijoic2FpZnVsbGFoMTIzIiwiYSI6ImNrOG9tNTgzODFhcTIzZW13YWRpNjVvbnkifQ.Txvwh8tqAWrkiQNphL4Ddw'
+Mapbox.setAccessToken(''
 );
 export default class MyComponent extends Component {
   constructor() {
@@ -117,7 +116,7 @@ export default class MyComponent extends Component {
    
     
 
-    return fetch(`https://api.mapbox.com/directions/v5/mapbox/cycling/${-84.518641},${39.134270};${-84.512023},${39.102779}?geometries=geojson&access_token=pk.eyJ1Ijoic2FpZnVsbGFoMTIzIiwiYSI6ImNrOG9tNTgzODFhcTIzZW13YWRpNjVvbnkifQ.Txvwh8tqAWrkiQNphL4Ddw`)
+    return fetch(`https://api.mapbox.com/directions/v5/mapbox/cycling/${-84.518641},${39.134270};${-84.512023},${39.102779}?geometries=geojson&access_token=`)
       .then((response) => response.json())
       .then((responseJson) => {
 
@@ -145,7 +144,7 @@ export default class MyComponent extends Component {
 
     this.setState({ search: search })
     const arr = [];
-    return fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.state.search}.json?access_token=pk.eyJ1Ijoic2FpZnVsbGFoMTIzIiwiYSI6ImNrOG9tNTgzODFhcTIzZW13YWRpNjVvbnkifQ.Txvwh8tqAWrkiQNphL4Ddw`)
+    return fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.state.search}.json?access_token=`)
       .then((response) => response.json())
       .then((responseJson) => {
 
