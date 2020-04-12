@@ -31,12 +31,12 @@ export default class MyComponent extends Component {
       selectuserlat: '',
       selectuserlong: '',
       location: {},
-      case:'',
-      date:'',
-      distance:'',
+      case: '',
+      date: '',
+      distance: '',
       places: [],
       data: [],
-      MyData:[],
+      MyData: [],
       select: 'Select a value',
       route:
       {
@@ -69,74 +69,53 @@ export default class MyComponent extends Component {
 
 
   async componentDidMount() {
-  
-   
-  
-      try {
+
+
+
+    try {
       const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
       )
-      if (granted === PermissionsAndroid.RESULTS.GRANTED ) {
-          // alert("You can use the location")
-          Geolocation.getCurrentPosition((info) => {
-          
-            
-            this.setState({
-                  latitude: info.coords.latitude,
-                  longitude: info.coords.longitude,
-              })
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        // alert("You can use the location")
+        Geolocation.getCurrentPosition((info) => {
 
-          });
 
-          this.getDirection();
+          this.setState({
+            latitude: info.coords.latitude,
+            longitude: info.coords.longitude,
+          })
+
+        });
+
       }
-    
-      
+
+
       else {
-          alert("Location permission denied")
+        alert("Location permission denied")
       }
-  }
-  catch (err) {
-      throw(err)
-  }
-  
+    }
+    catch (err) {
+      throw (err)
+    }
+
     return fetch(`http://134.209.102.183:5000/api/process?daterange=0`)
       .then((response) => response.json())
       .then((responseJson) => {
-      
-  
+
+
         var joined = this.state.data.concat(responseJson.data[0].locations);
-        this.setState({ data: joined,MyData:responseJson.data ,case:responseJson.data[0].no_of_cases,date:responseJson.data[0].date})
+        this.setState({ data: joined, MyData: responseJson.data, case: responseJson.data[0].no_of_cases, date: responseJson.data[0].date })
 
       })
 
 
-      
+
 
 
 
   }
 
-
-
-  getDirection = () => {
-
-    const {latitude,longitude}=this.state;
-    Geolocation.getCurrentPosition((position) =>{
-         var a =geolib.getDistance(position.coords, {
-                  latitude:latitude,
-                  longitude:longitude,
-                }),
-                // this.setState({distance:a}),
-                
-                
-                
-              },
-              () => {
-        alert('Position could not be determined.');
-      }
-      );
-  }
 
 
 
@@ -147,7 +126,7 @@ export default class MyComponent extends Component {
     return fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.state.search}.json?access_token=pk.eyJ1Ijoic2FpZnVsbGFoMTIzIiwiYSI6ImNrOG9tNTgzODFhcTIzZW13YWRpNjVvbnkifQ.Txvwh8tqAWrkiQNphL4Ddw`)
       .then((response) => response.json())
       .then((responseJson) => {
-     
+
 
 
         this.setState({ places: responseJson.features, location: responseJson.features })
@@ -182,32 +161,32 @@ export default class MyComponent extends Component {
 
       </Mapbox.PointAnnotation>
 
-);
-}
+    );
+  }
 
 
 
 
 
 
-render() {
-  const { places, selectuserlat, selectuserlong, location, distance } = this.state;
-  // const { navigate } = this.props.navigation
-  console.log("Date====>",distance)
-  
-    
-    
-    
-
-    
+  render() {
+    const { places, selectuserlat, selectuserlong, location, distance } = this.state;
+    // const { navigate } = this.props.navigation
+    console.log("Date====>", distance)
 
 
 
-    
-      return (
 
-   <Container>
-<StatusBar hidden={true}></StatusBar> 
+
+
+
+
+
+
+    return (
+
+      <Container>
+        <StatusBar hidden={true}></StatusBar>
 
         <Header searchBar rounded style={{ backgroundColor: '#FF8081', width: '100%' }}>
           <Item>
@@ -221,7 +200,7 @@ render() {
 
           {places == null ? this.state.flag :
             places.map((item, i) => {
-            
+
               return <View style={{ flexDirection: 'row' }}>
                 <Icon name="map-marker" type="font-awesome" color="green" />
                 <TouchableOpacity onPress={() => { this.setState({ SelectAddress: item.place_name, places: null, search: '', selectuserlat: item.center[0], selectuserlong: item.center[1], location: item.bbox }) }}>
@@ -229,12 +208,12 @@ render() {
                 </TouchableOpacity>
               </View>
 
-})
-}
+            })
+          }
         </View>
 
 
-        <View style={{ width: Dimensions.get('screen').width / 1, height: Dimensions.get('screen').height /2 }}>
+        <View style={{ width: Dimensions.get('screen').width / 1, height: Dimensions.get('screen').height / 2 }}>
           <Mapbox.MapView
             styleURL={Mapbox.StyleURL.Street}
             zoomEnabled={true}
@@ -249,10 +228,10 @@ render() {
               <Text style={{ color: 'red', fontWeight: "bold", fontSize: 20 }}>10 Km</Text>
               <Mapbox.PointAnnotation selected={true}
 
-key="pointAnnotation"
-id="pointAnnotation"
-title="8 km"
-coordinate={[this.state.longitude, this.state.latitude]}>
+                key="pointAnnotation"
+                id="pointAnnotation"
+                title="8 km"
+                coordinate={[this.state.longitude, this.state.latitude]}>
                 <Image
                   source={require('../Ima/marker.jpg')}
                   style={{
@@ -273,20 +252,20 @@ coordinate={[this.state.longitude, this.state.latitude]}>
           </Mapbox.MapView>
         </View>
 
-<View style={{height:25,backgroundColor:'#FF8081'}}>
-       {!this.state.case || this.state.data == null? <Text style={{textAlign:'center',color:'white',fontSize:18}}>Loading....</Text>:
-       
-       <View style={{justifyContent:'space-around',flexDirection:'row',flex:1}}>
-                <Text style={{color:'white',fontSize:18,textAlign:'center'}}> Case   {this.state.case}</Text>
-                <Text style={{color:'white',fontSize:18}}>Date{this.state.date}</Text>
-         </View>
-              }      
-</View>
+        <View style={{ height: 25, backgroundColor: '#FF8081' }}>
+          {!this.state.case || this.state.data == null ? <Text style={{ textAlign: 'center', color: 'white', fontSize: 18 }}>Loading....</Text> :
+
+            <View style={{ justifyContent: 'space-around', flexDirection: 'row', flex: 1 }}>
+              <Text style={{ color: 'white', fontSize: 18, textAlign: 'center' }}> Case   {this.state.case}</Text>
+              <Text style={{ color: 'white', fontSize: 18 }}>Date{this.state.date}</Text>
+            </View>
+          }
+        </View>
 
 
- 
- 
- 
+
+
+
         {this.state.SelectAddress == '' ? null :
           <View style={{ justifyContent: 'space-between', flexDirection: 'row', height: '18%', alignContent: 'center', backgroundColor: 'white', borderRadius: 10 }}>
             <View style={{ marginRight: 10, flex: 1, justifyContent: 'flex-end', flexDirection: 'row', alignSelf: 'center' }}>
@@ -305,21 +284,21 @@ coordinate={[this.state.longitude, this.state.latitude]}>
 
 
 
-}
-       
+        }
+
         {this.state.data.map((item, i) => {
           for (var key in item) {
-            return <View style={{flex:1,justifyContent: 'space-between', flexDirection: 'row', height: '18%', alignContent: 'center', backgroundColor: 'white', borderRadius: 10 }}>
-                <View style={{ marginRight: 10, flex: 1, justifyContent: 'flex-end', flexDirection: 'row', alignSelf: 'center' }}>
-                  <Icon iconStyle={{ justifyContent: 'flex-end', flex: 1 }} name="cross" type="entypo" size={20} />
-                  <Text style={{ marginLeft: '3%', flex: 1, alignSelf: 'flex-start', color: '#797B83', fontWeight: 'bold', fontSize: 18 }}>{item[key].loc_addr}</Text>
-                  <Text style={{ fontSize: 18 }}>4</Text>
-                  <Icon iconStyle={{ marginLeft: 8, top: '2%', alignSelf: 'center', textAlign: 'center' }} name="map-marker" type="font-awesome" color="#FF8081" size={20} />
-                </View>
+            return <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row', height: '18%', alignContent: 'center', backgroundColor: 'white', borderRadius: 10 }}>
+              <View style={{ marginRight: 10, flex: 1, justifyContent: 'flex-end', flexDirection: 'row', alignSelf: 'center' }}>
+                <Icon iconStyle={{ justifyContent: 'flex-end', flex: 1 }} name="cross" type="entypo" size={20} />
+                <Text style={{ marginLeft: '3%', flex: 1, alignSelf: 'flex-start', color: '#797B83', fontWeight: 'bold', fontSize: 18 }}>{item[key].loc_addr}</Text>
+                <Text style={{ fontSize: 18 }}>4</Text>
+                <Icon iconStyle={{ marginLeft: 8, top: '2%', alignSelf: 'center', textAlign: 'center' }} name="map-marker" type="font-awesome" color="#FF8081" size={20} />
+              </View>
             </View>
-              }
-            })}
-          
+          }
+        })}
+
 
 
 
